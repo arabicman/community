@@ -20,15 +20,18 @@ public class ServiceLogAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceLogAspect.class);
 
-    @Pointcut("execution(* com.nowcoder.community.service.*.*(..))")
+    @Pointcut("execution(* com.jx.community.service.*.*(..))")
     public void pointcut() {
 
     }
 
     @Before("pointcut()")
     public void before(JoinPoint joinPoint) {
-        // 用户[1.2.3.4],在[xxx],访问了[com.nowcoder.community.service.xxx()].
+        // 用户[1.2.3.4],在[xxx],访问了[com.jx.community.service.xxx()].
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
         String ip = request.getRemoteHost();
         String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
